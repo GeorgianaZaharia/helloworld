@@ -1,14 +1,23 @@
 version: 0.2
-
+ 
+env:
+  variables:
+    PROJECT_NAME: "CodeBuild-Synopsys-Detect"
+  parameter-store:
+    BLACKDUCK_URL: "https://accenture-test.app.blackduck.com/"
+    BLACKDUCK_TOKEN: "NDI4MjdkNTgtZTliZi00N2JhLWI3YzQtMThlYzAxYmI2Y2YwOjliOGQ5ZWVjLWRlZTktNDZmZC1hODQyLTg2M2YyYWQ3YzQ0MQ=="
+ 
 phases:
+  install:
+    commands:
+      - curl -LOk https://detect.synopsys.com/detect.sh
+      - chmod +x ./detect.sh
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...          
-      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
-      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.eu-central-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG      
+      - mvn clean package
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker image...
-      - docker push $AWS_ACCOUNT_ID.dkr.ecr.eu-central-1.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - bash detect.sh --blackduck.url=$BLACKDUCK_URL --blackduck.api.token=$BLACKDUCK_TOKEN --blackduck.trust.cert=true --detect.project.name=$PROJECT_NAME --detect.project.version.name=1.0
+  
+artifacts:
+  discard-paths: yes
