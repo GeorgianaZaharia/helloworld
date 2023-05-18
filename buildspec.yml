@@ -2,7 +2,7 @@ version: 0.2
  
 env:
   variables:
-    PROJECT_NAME: "CodeBuild-Synopsys-Detect"
+    PROJECT_NAME: "AWS_Hello_World"
   parameter-store:
     BLACKDUCK_URL: "https://accenture-test.app.blackduck.com/"
     BLACKDUCK_TOKEN: "NDI4MjdkNTgtZTliZi00N2JhLWI3YzQtMThlYzAxYmI2Y2YwOjliOGQ5ZWVjLWRlZTktNDZmZC1hODQyLTg2M2YyYWQ3YzQ0MQ=="
